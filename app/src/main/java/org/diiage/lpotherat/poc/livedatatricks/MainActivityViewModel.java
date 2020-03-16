@@ -15,6 +15,8 @@ public class MainActivityViewModel extends ViewModel {
 
     /**
      * Déclaration d'une Factory pour permettre de créer ce viewModel avec la dépendance au repository
+     *
+     * La factory permet au système de créer une instance de ce ViewModel avec un paramètre dans le constructeur
      */
     public static class MainActivityViewModelFactory implements ViewModelProvider.Factory {
 
@@ -96,22 +98,38 @@ public class MainActivityViewModel extends ViewModel {
             return null;
         });
         // Notez que si la méthode getById accepte les valeurs nulles, il est possible d'écrire
-        // le code ci dessus de manière plus compact, comme ci dessous.
+        // le code ci dessus de manière plus compacte, comme ci dessous.
         //welcomeMessage = Transformations.switchMap(uuserId,mainRepository::getByNullableId);
 
     }
 
+    /**
+     * Getter de la valeur 1, on retourne ici une version MutableLiveData, car cette valeur
+     * doit pouvoir être modifiable depuis l'extérieur
+     * @return
+     */
     public MutableLiveData<Integer> getValue1() {
         return value1;
     }
 
+    /**
+     * Getter de la valeur 2, on retourne ici une version MutableLiveData, car cette valeur
+     * doit pouvoir être modifiable depuis l'extérieur
+     * @return
+     */
     public MutableLiveData<Integer> getValue2() {
         return value2;
     }
 
+    /**
+     * Getter de la valeur 1, on retourne ici une version LiveData, en lecture seule, car cette valeur
+     * ne doit pas pouvoir être modifiable depuis l'extérieur
+     * @return
+     */
     public LiveData<String> getHumanReadableResult() {
         return humanReadableResult;
     }
+
 
     public LiveData<String> getWelcomeMessage() {
         return welcomeMessage;
