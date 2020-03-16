@@ -58,7 +58,10 @@ public class MainActivityViewModel extends ViewModel {
         this.mainRepository = mainRepository;
 
         // ----------------------------------------
-        // Démo des types de LiveData + Transmations.map
+        // Démo des types de LiveData + Transformations.map
+
+        // Dans le cas d'un MediatorLiveData, les observer reçoivent la valeur observée, et doivent
+        // affecter la valeur correspondante directement avec setValue.
 
         // On paramètre ici result pour l'abonner aux modifications de value1
         result.addSource(value1,integer -> {
@@ -72,19 +75,29 @@ public class MainActivityViewModel extends ViewModel {
                 result.setValue(integer * value1.getValue());
             }
         });
-
+        // On utilise ici la transformation "map" pour convertir le résultat Integer en String.
+        // - map retourne un LiveData, qui est une image du LiveData source (result ici)
+        // - l'observer doit retourner la nouvelle valeur à appliquer lors de la modification de la valeur d'origine
         humanReadableResult = Transformations.map(result,input -> input != null ? "Le résultat est " + input.toString() : "0");
         // ----------------------------------------
 
-
-
+        // ------------------------------------------------------------
+        // Démonstration de l'usage de switchMap
+        // Cas d'usage : Nous avons l'identifiant d'un utilisateur, et souhaitons afficher son nom
+        // - Dans notre repository, la méthode getById retourne un LiveData observable
+        // - l'identifiant de l'utilisateur est dans un LiveData uuserId.
+        // Ici, switchMap va permettre de créer un LiveData (welcomeMessage) qui va, en fonction de
+        // la valeur de uuserId, prendre la valeur de getById . Le nouveau LiveData créé suit les
+        // modification internes de LiveData, et peut donc être observé.
         welcomeMessage = Transformations.switchMap(uuserId,input -> {
             if(input != null) {
                 return mainRepository.getById(input);
             }
-            return new MutableLiveData<String>(){{setValue("");}};
+            return null;
         });
-
+        // Notez que si la méthode getById accepte les valeurs nulles, il est possible d'écrire
+        // le code ci dessus de manière plus compact, comme ci dessous.
+        //welcomeMessage = Transformations.switchMap(uuserId,mainRepository::getByNullableId);
 
     }
 

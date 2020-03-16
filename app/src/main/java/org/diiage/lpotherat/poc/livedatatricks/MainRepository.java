@@ -2,6 +2,7 @@ package org.diiage.lpotherat.poc.livedatatricks;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -53,5 +54,15 @@ public class MainRepository implements MainRepositoryInterface{
         });
 
         return ret;
+    }
+
+    /**
+     * Alternative à getById acceptant les valeurs nulles
+     * @param id
+     * @return
+     */
+    @Override
+    public LiveData<String> getByNullableId(@Nullable Integer id) {
+        return id != null ? getById(id) : null;
     }
 }
