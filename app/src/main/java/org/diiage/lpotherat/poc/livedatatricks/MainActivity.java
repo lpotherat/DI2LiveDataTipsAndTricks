@@ -16,7 +16,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
+        mainActivityViewModel = new ViewModelProvider(this,
+                new MainActivityViewModel.MainActivityViewModelFactory(new MainRepository()))
+                .get(MainActivityViewModel.class);
 
         mainActivityViewModel.getHumanReadableResult().observe(this, string -> {
             if (string != null) {

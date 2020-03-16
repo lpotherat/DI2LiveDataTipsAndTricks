@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
  *
  * Les données sont stockées dans une Hashmap, la tâche lente est simulée avec thread.sleep.
  */
-public class MainRepository {
+public class MainRepository implements MainRepositoryInterface{
 
     // Stockage local
     private HashMap<Integer,String> noms = new HashMap<>();
@@ -32,7 +32,12 @@ public class MainRepository {
     }
 
     /**
-     * 
+     * Retourne un nom à partir de son id.
+     *
+     *  => Cette méthode est un exemple d'implémentation de repository utilisant Livedata pour le retour de données.
+     *  Notez qu'un nouveau LiveData est créé à chaque appel, en effet, le LiveData retourné est lié à l'identifiant
+     *  passé en paramètre.
+     *
      * @param id
      * @return
      */
